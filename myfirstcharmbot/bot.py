@@ -9,19 +9,27 @@ logging.basicConfig(format='%(asctime)s - %(levelname)s - %(message)s',
                     )
 
 def greet_user(bot, update):
-    text = 'Call /start'
+    text = 'You called /start'
     logging.info(text)
     update.message.reply_text(text)
 
 def talk_to_me(bot, update):
-    user_text = 'Hello {}! You are wrote {}'.format(update.message.chat.first_name, update.message.text)
+    if not update.message.chat.first_name == None:
+        user_nick = update.message.chat.first_name
+    elif not update.message.chat.last_name == None:
+        user_nick = update.message.chat.first_name
+    elif not update.message.chat.username == None:
+        user_nick =  update.message.chat.username
+    else:
+        user_nick = 'super hidden man (ID={})'.format(update.message.chat.id)
+    user_text = 'Hello {}! You are wrote: {}'.format(user_nick, update.message.text)
     logging.info("User: %s, Chat id: %s, Message: %s",update.message.chat.username, update.message.chat.id,
                 update.message.text)
     update.message.reply_text(user_text)
 
 
 def main():
-    mybot = Updater(API_KEY, request_kwargs=PROXY)
+    mybot = Updater(settings.API_KEY, request_kwargs=settings.PROXY)
     logging.info('Bot starting')
     dp=mybot.dispatcher
     dp.add_handler(CommandHandler('start', greet_user))
