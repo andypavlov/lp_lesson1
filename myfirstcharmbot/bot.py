@@ -14,11 +14,11 @@ def greet_user(bot, update):
     update.message.reply_text(text)
 
 def talk_to_me(bot, update):
-    if not update.message.chat.first_name == None:
+    if update.message.chat.first_name:
         user_nick = update.message.chat.first_name
-    elif not update.message.chat.last_name == None:
+    elif update.message.chat.last_name:
         user_nick = update.message.chat.first_name
-    elif not update.message.chat.username == None:
+    elif update.message.chat.username:
         user_nick =  update.message.chat.username
     else:
         user_nick = 'super hidden man (ID={})'.format(update.message.chat.id)
